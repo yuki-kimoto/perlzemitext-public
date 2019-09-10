@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/css/common.css">
 
-<title>Title - Perlゼミのテキスト処理入門</title>
+<title>Title - Perlテキスト処理プログラミング入門 - テキスト処理はPerlが便利</title>
 <meta name="description" content="#!/usr/bin/env perl">
   </head>
   <body>
@@ -109,12 +109,10 @@
           <!-- side -->
 <div class="side-list">
   <div class="side-list-title">
-    Side Bar
+    目次
   </div>
   <ul>
-    <li>Foo</li>
-    <li>Bar</li>
-    <li>Baz</li>
+    <li><a href="/list.html">記事一覧</a></li>
   </ul>
 </div>
 
