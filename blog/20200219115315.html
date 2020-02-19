@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>非常に大きなファイルの処理 part.1 - CSVファイルを開こう -  - Perlテキスト処理プログラミング入門 - テキスト処理はPerlが便利</title>
+<meta name="description" content="過去の事務作業で上司から渡されたのは、経理データでした。
+今年は法令監査に対応しないといけないので、過去１０年分のデータを集計しないといけなかったのです。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<h1>
+  <a href="/">Perlゼミのテキスト処理入門</a>
+</h1>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200219115315.html">非常に大きなファイルの処理 part.1 - CSVファイルを開こう - </a></h2>
+
+<p>過去の事務作業で上司から渡されたのは、経理データでした。
+<strong>今年は法令監査に対応しないといけないので、過去１０年分のデータを集計しないといけなかった</strong>のです。</p>
+
+<p>データは、CSV 形式でした。CSV というのは、データとデータがカンマ（,）で区切られたものです。</p>
+
+<h2 id="toc_0">Perl を使ってデータを読み込もう</h2>
+
+<p>エクセルで読み込むとパソコンがフリーズするので、どうにかしたいですよね。</p>
+
+<p>そこで、Perl を使ってみましょう。大きなデータも読み込めるし、エクセルと比べてサクサク処理が出来ます。</p>
+
+<p>今回は、まず CSV ファイルを読み込んでみます。</p>
+
+<h3 id="toc_1">読み込むデータ(data.csv)</h3>
+
+<pre>
+year,month,sales,profit
+2019,1,1000,800
+2019,2,2000,900
+2019,3,3000,1000
+</pre>
+
+<h3 id="toc_2">データを読み込むプログラム(csv_read.pl)</h3>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+while (my $line = <>) {
+  print $line;
+}
+</pre>
+
+<h3 id="toc_3">プログラムの実行</h3>
+
+<p>以下のようにコマンドを打ち込みます。<strong>ドルマーク（＄）は、コマンドラインであることを示す記号なので、実際には打ち込まないでください。</strong></p>
+
+<pre>
+$ perl csv_read.pl data.csv
+</pre>
+
+<h3 id="toc_4">実行結果</h3>
+
+<pre>
+year,month,sales,profit
+2019,1,1000,800
+2019,2,2000,900
+2019,3,3000,1000$
+</pre>
+
+<p>少し不格好ですが、data.csv のデータがすべて出力されましたね。<strong>一歩前進です！</strong></p>
+
+<p>次回は、この不格好な出力を何とかしてみましょう。</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    目次
+  </div>
+  <ul>
+    <li><a href="/list.html">記事一覧</a></li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <!-- footer -->
+<a rel="nofollow" href="http://www.perlzemi.com">Perlゼミのプログラミングスクールはこちら</a> & <a rel="nofollow" href="https://jp.giblog.net/">このサイトはGiblogで製作されています</a>
+
+      </div>
+    </div>
+  </body>
+</html>
