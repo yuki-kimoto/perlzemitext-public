@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/css/common.css">
 
-<title>Title - Perlテキスト処理プログラミング入門 - テキスト処理はPerlが便利</title>
+<title>Title - Perlテキスト処理・正規表現入門 - テキスト処理・正規表現ならPerlゼミ</title>
 <meta name="description" content="#!/usr/bin/env perl">
   </head>
   <body>
@@ -14,7 +14,7 @@
       <div class="header">
         <!-- header -->
 <h1>
-  <a href="/">Perlゼミのテキスト処理入門</a>
+  <a href="/">Perlテキスト処理・正規表現入門</a>
 </h1>
 
       </div>
