@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>非常に大きなファイルの処理 part.2 - 出力を見やすくしよう -  - Perlテキスト処理プログラミング入門 - テキスト処理はPerlが便利</title>
+<meta name="description" content="CSVのデータがすべて出力されたのは良いのですが、不格好ですね。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<h1>
+  <a href="/">Perlゼミのテキスト処理入門</a>
+</h1>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200220111504.html">非常に大きなファイルの処理 part.2 - 出力を見やすくしよう - </a></h2>
+
+<p>CSVのデータがすべて出力されたのは良いのですが、不格好ですね。</p>
+
+<p>まず、<code>2019,3,3000,1000$</code>という表示になっていますので、ドルマーク（＄）を同じ行に表示させないようにしましょう。</p>
+
+<p>プログラムを次のように書き換えます。</p>
+
+<h3 id="toc_0">書き換えたプログラム(csv_read_new.pl)</h3>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+while (my $line = <>) {
++  chomp $line;
+  print $line;
++  print "\n";
+}
+</pre>
+
+<p><br></p>
+
+<p>左側にプラス記号（+）を付けた行が、追加した行です。<strong>プラス記号は目印なので、実際のプログラムには書かないでください。</strong></p>
+
+<p>実行してみると、ドルマークが改行されて表示されます。</p>
+
+<pre>
+year,month,sales,profit
+2019,1,1000,800
+2019,2,2000,900
+2019,3,3000,1000
+$
+</pre>
+
+<p>これで見栄えが良くなりましたね！</p>
+
+<h3 id="toc_1">プログラムに興味のある方への補足</h3>
+
+<p><code>chomp $line;</code>というのが、改行を除去するための文です。</p>
+
+<p>このプログラムは、CSVファイルを１行ずつ読み込みますが、行には改行の情報も存在しています（正確には、改行コードというデータが行末に存在しています）。</p>
+
+<p>改行の情報はプログラムで処理するには余計なことが多いので、<code>chomp $line</code>で取り除きます。</p>
+
+<p><code>print &quot;\n&quot;;</code>は、改行情報を表示するための文です。見栄えを整えるために、取り除いた改行の情報をプログラムで出力しています。</p>
+
+<p>このように、<strong>改行の情報はプログラムで追加したほうが分かりやすくなります</strong>。</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    目次
+  </div>
+  <ul>
+    <li><a href="/list.html">記事一覧</a></li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <!-- footer -->
+<a rel="nofollow" href="http://www.perlzemi.com">Perlゼミのプログラミングスクールはこちら</a> & <a rel="nofollow" href="https://jp.giblog.net/">このサイトはGiblogで製作されています</a>
+
+      </div>
+    </div>
+  </body>
+</html>
