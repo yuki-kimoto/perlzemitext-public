@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>非常に大きなファイルの処理 part.3 - 数字を集計しよう - - Perlテキスト処理・正規表現入門 - テキスト処理・正規表現ならPerlゼミ</title>
+<meta name="description" content="CSVが見やすくなったところで、数字を集計しましょう。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<h1>
+  <a href="/">Perlテキスト処理・正規表現入門</a>
+</h1>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200314170743.html">非常に大きなファイルの処理 part.3 - 数字を集計しよう -</a></h2>
+
+<p>CSVが見やすくなったところで、数字を集計しましょう。</p>
+
+<p>以下のデータを使います。</p>
+
+<pre>
+year,month,sales,profit
+2019,1,1000,800
+2019,2,2000,900
+2019,3,3000,1000
+</pre>
+
+<p>このデータを使って、2019年の売上げ(sales)はいくらなのか出しましょう。こんな感じですね。</p>
+
+<pre>
+year,sales
+2019,6000
+</pre>
+
+<p><br>
+まず、コードをこう書きます。</p>
+
+<h2 id="toc_0">データ処理コード(proc_data.pl)</h2>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+while (my $line = <>) {
+  chomp $line;
+  my @row = split /,/, $line;
+
+  print "@row\n";
+}
+</pre>
+
+<h2 id="toc_1">実行結果</h2>
+
+<pre>
+year month sales profit
+2019 1 1000 800
+2019 2 2000 900
+2019 3 3000 1000
+</pre>
+
+<p><strong>いや、何も変わってないじゃん！</strong>と思われますが、カンマが無くなってますね。</p>
+
+<p>ここでコードを書き換えてみます(左端に<code>-</code>を付けたのが消した箇所、<code>+</code>を付けたのが書き換えた箇所です)。</p>
+
+<h2 id="toc_2">データ処理コード(proc_data.pl)</h2>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+while (my $line = <>) {
+  chomp $line;
+  my @row = split /,/, $line;
+
+-  print "@row\n";
++  print "$row[0]\n";
+}
+</pre>
+
+<h2 id="toc_3">実行結果</h2>
+
+<pre>
+year
+2019
+2019
+2019
+</pre>
+
+<p><strong>yearの列しか出なくなりましたね！</strong></p>
+
+<p>データを集計するときには、このように、列の単位でデータを扱えたほうが便利です。次回は、列の単位で数字を集計してみましょう。</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    目次
+  </div>
+  <ul>
+    <li><a href="/list.html">記事一覧</a></li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <!-- footer -->
+<a rel="nofollow" href="http://www.perlzemi.com">Perlゼミのプログラミングスクールはこちら</a> & <a rel="nofollow" href="https://jp.giblog.net/">このサイトはGiblogで製作されています</a>
+
+      </div>
+    </div>
+  </body>
+</html>
