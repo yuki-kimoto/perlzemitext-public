@@ -6,9 +6,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 <link rel="stylesheet" type="text/css" href="/css/common.css">
 
-<title>非常に大きなファイルの処理 part.1 - CSVファイルを開こう -  - Perlテキスト処理・正規表現入門 - テキスト処理・正規表現ならPerlゼミ</title>
-<meta name="description" content="過去の事務作業で上司から渡されたのは、経理データでした。
-今年は法令監査に対応しないといけないので、過去１０年分のデータを集計しないといけなかったのです。">
+<title>Perlで始めるCSVのテキスト処理 - Perlテキスト処理・正規表現入門 - テキスト処理・正規表現ならPerlゼミ</title>
+<meta name="description" content="「大量データの処理をすると、エクセルが重くて開けない。。」">
   </head>
   <body>
     <div class="container">
@@ -27,14 +26,26 @@
 
   </div>
   <div class="middle">
-    <h2><a href="/blog/20200219115315.html">非常に大きなファイルの処理 part.1 - CSVファイルを開こう - </a></h2>
+    <h2><a href="/blog/20200219115315.html">Perlで始めるCSVのテキスト処理</a></h2>
+
+<h3 id="toc_0">イントロダクション</h3>
+
+<p><strong>「大量データの処理をすると、エクセルが重くて開けない。。」</strong></p>
+
+<p>昔、CSV ファイルを上司から渡されて、エクセルで処理しようとした時の自分の感想です。そのときは、CSV ファイルを３つくらいに分割して処理させました。</p>
+
+<p>しかし、かなり後になって、Perl を使うと、重くて処理できない大容量のファイルでもパソコンをフリーズさせることなく処理できることが分かりました。</p>
+
+<p>このトピックでは、仕事でパソコンを使っているけどプログラミングに詳しくない人を対象に、文書データを便利に処理するための方法を紹介します。</p>
+
+<h3 id="toc_1">サイズの大きいファイルでもフリーズしないやり方</h3>
 
 <p>過去の事務作業で上司から渡されたのは、経理データでした。
 <strong>今年は法令監査に対応しないといけないので、過去１０年分のデータを集計しないといけなかった</strong>のです。</p>
 
 <p>データは、CSV 形式でした。CSV というのは、データとデータがカンマ（,）で区切られたものです。</p>
 
-<h2 id="toc_0">Perl を使ってデータを読み込もう</h2>
+<h4 id="toc_2">Perl を使ってデータを読み込もう</h4>
 
 <p>エクセルで読み込むとパソコンがフリーズするので、どうにかしたいですよね。</p>
 
@@ -42,7 +53,7 @@
 
 <p>今回は、まず CSV ファイルを読み込んでみます。</p>
 
-<h3 id="toc_1">読み込むデータ(data.csv)</h3>
+<h4 id="toc_3">読み込むデータ(data.csv)</h4>
 
 <pre>
 year,month,sales,profit
@@ -51,7 +62,7 @@ year,month,sales,profit
 2019,3,3000,1000
 </pre>
 
-<h3 id="toc_2">データを読み込むプログラム(csv_read.pl)</h3>
+<h4 id="toc_4">データを読み込むプログラム(csv_read.pl)</h4>
 
 <pre>
 #! /usr/bin/env perl
@@ -63,15 +74,15 @@ while (my $line = <>) {
 }
 </pre>
 
-<h3 id="toc_3">プログラムの実行</h3>
+<p><br></p>
 
-<p>以下のようにコマンドを打ち込みます。<strong>ドルマーク（＄）は、コマンドラインであることを示す記号なので、実際には打ち込まないでください。</strong></p>
+<p>さあ、以下のようにコマンドを入力し、プログラムを実行します。<strong>ドルマーク（＄）は、コマンドラインであることを示す記号なので、実際には打ち込まないでください。</strong></p>
 
 <pre>
 $ perl csv_read.pl data.csv
 </pre>
 
-<h3 id="toc_4">実行結果</h3>
+<h4 id="toc_5">実行結果</h4>
 
 <pre>
 year,month,sales,profit
@@ -82,7 +93,265 @@ year,month,sales,profit
 
 <p>少し不格好ですが、data.csv のデータがすべて出力されましたね。<strong>一歩前進です！</strong></p>
 
-<p>次回は、この不格好な出力を何とかしてみましょう。</p>
+<p>次は、この不格好な出力を何とかしてみましょう。</p>
+
+<h3 id="toc_6">出力を見やすくしよう</h3>
+
+<p>CSV のデータがすべて出力されたのは良いのですが、不格好ですね。</p>
+
+<p>まず、<code>2019,3,3000,1000$</code>という表示になっていますので、ドルマーク（＄）を同じ行に表示させないようにしましょう。</p>
+
+<p>プログラムを次のように書き換えます。</p>
+
+<h4 id="toc_7">書き換えたプログラム(csv_read_new.pl)</h4>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+while (my $line = <>) {
++  chomp $line;
+  print $line;
++  print "\n";
+}
+</pre>
+
+<p><br></p>
+
+<p>左側にプラス記号（+）を付けた行が、追加した行です。<strong>プラス記号は目印なので、実際のプログラムには書かないでください。</strong></p>
+
+<h4 id="toc_8">実行結果</h4>
+
+<pre>
+year,month,sales,profit
+2019,1,1000,800
+2019,2,2000,900
+2019,3,3000,1000
+$
+</pre>
+
+<p>ドルマークが改行されて表示されます。これで見栄えが良くなりました！</p>
+
+<h4 id="toc_9">プログラムに興味のある方への補足</h4>
+
+<p><code>chomp $line;</code>は、改行を除去する命令文です。</p>
+
+<p>このプログラムは、CSV ファイルを１行ずつ読み込みますが、行には改行の情報も存在しています（正確には、改行コードというデータが行末に存在しています）。</p>
+
+<p>改行の情報はプログラムで処理するには余計なことが多いので、<code>chomp $line</code>で取り除きます。</p>
+
+<p><code>print &quot;\n&quot;;</code>は、改行情報を表示するための文です。見栄えを整えるために、取り除いた改行の情報をプログラムで出力しています。</p>
+
+<p>このように、<strong>改行の情報はプログラムで追加したほうが分かりやすくなります</strong>。</p>
+
+<h3 id="toc_10">数字を集計しよう</h3>
+
+<p>CSV が見やすくなったところで、数字を集計しましょう。集計対象のデータを再掲します。</p>
+
+<h4 id="toc_11">読み込むデータ(data.csv)</h4>
+
+<pre>
+year,month,sales,profit
+2019,1,1000,800
+2019,2,2000,900
+2019,3,3000,1000
+</pre>
+
+<p>このデータを使って、2019 年の売上げ(sales)はいくらなのか出しましょう。こんな感じですね。</p>
+
+<pre>
+year,sales
+2019,6000
+</pre>
+
+<p><br>
+まず、コードをこう書きます。</p>
+
+<h4 id="toc_12">データ処理コード(proc_data.pl)</h4>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+while (my $line = <>) {
+  chomp $line;
+  my @row = split /,/, $line;
+
+  print "@row\n";
+}
+</pre>
+
+<h4 id="toc_13">実行結果</h4>
+
+<pre>
+year month sales profit
+2019 1 1000 800
+2019 2 2000 900
+2019 3 3000 1000
+</pre>
+
+<p><strong>いや、何も変わってないじゃん！</strong>と思われますが、カンマが無くなってますね。</p>
+
+<p>ここでコードを書き換えてみます(左端に<code>-</code>を付けたのが消した箇所、<code>+</code>を付けたのが書き換えた箇所です)。</p>
+
+<h4 id="toc_14">データ処理コード(proc_data.pl)</h4>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+while (my $line = <>) {
+  chomp $line;
+  my @row = split /,/, $line;
+
+-  print "@row\n";
++  print "$row[0]\n";
+}
+</pre>
+
+<h4 id="toc_15">実行結果</h4>
+
+<pre>
+year
+2019
+2019
+2019
+</pre>
+
+<p><strong>year の列しか出なくなりましたね！</strong></p>
+
+<p>データを集計するときには、このように、列の単位でデータを扱えたほうが便利です。</p>
+
+<h3 id="toc_16">列の単位で数字を集計しよう</h3>
+
+<p>さて、実際に 2019 年の売上げを集計してみましょう。</p>
+
+<h4 id="toc_17">読み込むデータ(data.csv)</h4>
+
+<pre>
+year,month,sales,profit
+2019,1,1000,800
+2019,2,2000,900
+2019,3,3000,1000
+</pre>
+
+<h4 id="toc_18">欲しい出力結果</h4>
+
+<pre>
+year,sales
+2019,6000
+</pre>
+
+<h4 id="toc_19">データ処理コード(proc_data.pl)</h4>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+my $sales = 0;
+while (my $line = <>) {
+  chomp $line;
+  my @row = split /,/, $line;
+
+  $sales += $row[2];
+  print "$row[0], $row[2]\n";
+  print "$row[0], $sales\n";
+}
+</pre>
+
+<h4 id="toc_20">コード実行</h4>
+
+<pre>
+$ perl proc_data.pl data.csv
+</pre>
+
+<h4 id="toc_21">出力結果</h4>
+
+<pre>
+Argument "sales" isn't numeric in addition (+) at proc_data.pl line 11, <> line 1.
+year, sales
+year, 0
+2019, 1000
+2019, 1000
+2019, 2000
+2019, 3000
+2019, 3000
+2019, 6000
+</pre>
+
+<p>なんとか結果は出せましたが、<strong>要らない情報がたくさんあります！</strong></p>
+
+<p>次は、これらの情報を削除していきましょう。</p>
+
+<h3 id="toc_22">要らない情報を消そう</h3>
+
+<p>余計な出力を削除していきましょう。</p>
+
+<h4 id="toc_23">読み込むデータ(data.csv)</h4>
+
+<pre>
+year,month,sales,profit
+2019,1,1000,800
+2019,2,2000,900
+2019,3,3000,1000
+</pre>
+
+<h4 id="toc_24">欲しい出力結果</h4>
+
+<pre>
+year,sales
+2019,6000
+</pre>
+
+<h4 id="toc_25">データ処理コード(proc_data.pl)</h4>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+
+my $sales = 0;
+my $is_header = 1;
+my $year = '';
+while (my $line = <>) {
+  chomp $line;
+  my @row = split /,/, $line;
+
+  if ($is_header) {
+    print "$row[0], $row[2]\n";
+    $is_header = 0;
+    next;
+  }
+
+  $year = $row[0];
+  $sales += $row[2];
+}
+print "$year, $sales\n";
+</pre>
+
+<h4 id="toc_26">コード実行</h4>
+
+<pre>
+$ perl proc_data.pl data.csv
+</pre>
+
+<h4 id="toc_27">出力結果</h4>
+
+<pre>
+year,sales
+2019,6000
+</pre>
+
+<p><br>
+欲しい結果と同じになりましたね！</p>
+
+<p>しかし、データ処理コードが複雑になりました。頭を整理しましょう。</p>
+
+<p>次回は複雑になった箇所を解説します。</p>
 
   </div>
   <div class="bottom">
