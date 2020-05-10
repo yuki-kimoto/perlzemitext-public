@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+
+<title>Perlで始める日本語処理 - Perlテキスト処理・正規表現入門 - テキスト処理・正規表現ならPerlゼミ</title>
+<meta name="description" content="日本語を処理してみましょう。">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <!-- header -->
+<h1>
+  <a href="/">Perlテキスト処理・正規表現入門</a>
+</h1>
+
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="entry">
+  <div class="top">
+    <!-- top -->
+
+  </div>
+  <div class="middle">
+    <h2><a href="/blog/20200510114410.html">Perlで始める日本語処理</a></h2>
+
+<h3 id="toc_0">日本語処理をしてみよう</h3>
+
+<p>日本語を処理してみましょう。</p>
+
+<p>会計データが全て英語や数値だけだったら良いのですが、そんなことはありません。日本語の処理ができると、表現できる処理の幅が拡がります。</p>
+
+<p>まず、日本語が入力されたデータを見てみましょう。
+こんな感じです。</p>
+
+<h4 id="toc_1">読み込むデータ(data_jp.csv)</h4>
+
+<pre>
+year,month,sales,member
+2019,1,1000,山田
+2019,2,2000,川口
+2019,3,3000,佐藤一郎
+2019,4,4000,佐藤次郎
+2020,4,4500,佐藤三郎
+</pre>
+
+<p>この中から、苗字が佐藤さんの人が売り上げた総額を出してみましょう。</p>
+
+<h4 id="toc_2">期待する出力結果</h4>
+
+<pre>
+sales,member
+11500,佐藤
+</pre>
+
+<p>コードはこんな感じになります。</p>
+
+<h4 id="toc_3">データ処理コード(proc_data_jp.pl)</h4>
+
+<pre>
+#! /usr/bin/env perl
+use strict;
+use warnings;
+use Encode qw(decode encode);
+use utf8;
+use feature qw(say);
+
+my $is_header = 1;
+my @headers;
+my @datas;
+my $sales_sato = 0;
+
+# 行入力セパレータをCRLFへ
+local $/ = "\x0D\x0A";
+
+while ( my $line = decode('Shift_JIS', <>) ) {
+  chomp $line;
+  my @row = split /,/, $line;
+
+  if ($is_header) {
+    $is_header = 0;
+    @headers = @row;
+    next;
+  }
+
+  # { データの列名 => 項目 } とする
+  my %hash;
+  @hash{@headers} = @row;
+
+  # データを使って計算
+  $sales_sato += $hash{sales} if $hash{member} =~ /佐藤/;
+}
+
+say encode('UTF-8', "佐藤さんたちの売り上げは ${sales_sato} 円です。");
+</pre>
+
+<h4 id="toc_4">コード実行</h4>
+
+<pre>
+$ perl proc_data_jp.pl data_jp.csv
+</pre>
+
+<h4 id="toc_5">出力結果</h4>
+
+<pre>
+佐藤さんたちの売り上げは 11500 円です。
+</pre>
+
+<p>期待する出力結果とは異なりましたが、数字は合っていますね！</p>
+
+<p>次回は、整形する前に、日本語処理の基本を解説していきます。</p>
+
+  </div>
+  <div class="bottom">
+    <!-- bottom -->
+
+  </div>
+</div>
+
+        </div>
+        <div class="side">
+          <!-- side -->
+<div class="side-list">
+  <div class="side-list-title">
+    目次
+  </div>
+  <ul>
+    <li><a href="/list.html">記事一覧</a></li>
+  </ul>
+</div>
+
+        </div>
+      </div>
+      <div class="footer">
+        <div class="kimoto_system_link">
+  <a href="https://kimoto-system.co.jp/message">
+    <img src="https://kimoto-system.co.jp/images/kimoto-system-logo.png" alt="Perl Webシステム開発">
+    Perl Webシステム開発の木本システム
+  </a>
+</div>
+
+<div class="copyright">
+  Copyright © Yuki Kimoto
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>
