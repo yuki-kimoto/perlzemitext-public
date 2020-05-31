@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="/css/common.css">
 
 <title>Perlで始める日本語処理 - Perlテキスト処理・正規表現入門 - テキスト処理・正規表現ならPerlゼミ</title>
-<meta name="description" content="日本語を処理してみましょう。">
+<meta name="description" content="会計データが全て英語や数値だけだったら良いのですが、そんなことはありません。日本語の処理ができると、表現できる処理の幅が拡がります。">
   </head>
   <body>
     <div class="container">
@@ -28,16 +28,16 @@
   <div class="middle">
     <h2><a href="/blog/20200510114410.html">Perlで始める日本語処理</a></h2>
 
-<h3 id="toc_0">日本語処理をしてみよう</h3>
-
-<p>日本語を処理してみましょう。</p>
+<h3 id="toc_0">日本語処理をする理由</h3>
 
 <p>会計データが全て英語や数値だけだったら良いのですが、そんなことはありません。日本語の処理ができると、表現できる処理の幅が拡がります。</p>
+
+<h3 id="toc_1">日本語処理のサンプル</h3>
 
 <p>まず、日本語が入力されたデータを見てみましょう。
 こんな感じです。</p>
 
-<h4 id="toc_1">読み込むデータ(data_jp.csv)</h4>
+<h4 id="toc_2">読み込むデータ(data_jp.csv)</h4>
 
 <pre>
 year,month,sales,member
@@ -50,7 +50,7 @@ year,month,sales,member
 
 <p>この中から、苗字が佐藤さんの人が売り上げた総額を出してみましょう。</p>
 
-<h4 id="toc_2">期待する出力結果</h4>
+<h4 id="toc_3">期待する出力結果</h4>
 
 <pre>
 sales,member
@@ -59,7 +59,7 @@ sales,member
 
 <p>コードはこんな感じになります。</p>
 
-<h4 id="toc_3">データ処理コード(proc_data_jp.pl)</h4>
+<h4 id="toc_4">サンプルコード(proc_data_jp.pl)</h4>
 
 <pre>
 #! /usr/bin/env perl
@@ -74,7 +74,7 @@ my @headers;
 my @datas;
 my $sales_sato = 0;
 
-# 行入力セパレータをCRLFへ
+# 改行コードをCRLFへ
 local $/ = "\x0D\x0A";
 
 while ( my $line = decode('Shift_JIS', <>) ) {
@@ -98,13 +98,13 @@ while ( my $line = decode('Shift_JIS', <>) ) {
 say encode('UTF-8', "佐藤さんたちの売り上げは ${sales_sato} 円です。");
 </pre>
 
-<h4 id="toc_4">コード実行</h4>
+<h4 id="toc_5">コード実行</h4>
 
 <pre>
 $ perl proc_data_jp.pl data_jp.csv
 </pre>
 
-<h4 id="toc_5">出力結果</h4>
+<h4 id="toc_6">出力結果</h4>
 
 <pre>
 佐藤さんたちの売り上げは 11500 円です。
@@ -112,7 +112,44 @@ $ perl proc_data_jp.pl data_jp.csv
 
 <p>期待する出力結果とは異なりましたが、数字は合っていますね！</p>
 
-<p>次回は、整形する前に、日本語処理の基本を解説していきます。</p>
+<p>整形する前に、日本語処理の基本を解説していきます。</p>
+
+<h3 id="toc_7">デコード処理</h3>
+
+<p>日本語のデータは、コンピュータが認識しやすいデータを、日本人に読み易いように加工したものです。ですので、コンピュータに認識しやすいデータに戻して、プログラムで処理できるようにする必要があります。</p>
+
+<p>この処理を、デコード処理といいます。</p>
+
+<h4 id="toc_8">文字コード</h4>
+
+<p>実際にデコードを行っているのは下記の箇所です。</p>
+
+<pre>
+while ( my $line = decode('Shift_JIS', <>) ) {
+</pre>
+
+<p><code>decode(&#39;Shift_JIS&#39;, &lt;&gt;)</code>というのがデコード処理を行っている命令文です。</p>
+
+<p><code>Shift_JIS</code>は読み込むデータの文字コードを表しています。日本語を表現するには、ほかに<code>EUC-JP</code>などがあります。ほかの形式のデータを読み込んだ場合は、ここを変えないと正確にデータが読み取れません。</p>
+
+<p><code>&lt;&gt;</code>は読み込むデータの一行分を表現しています。今回のプログラムでは、一行ずつデータを読み込んで処理しています。</p>
+
+<h4 id="toc_9">改行コード</h4>
+
+<p>改行コードというのは、改行であることをコンピュータに教えてあげるデータのことです。</p>
+
+<p>改行であるかどうかをコンピュータは自動的に判別できません。ですから、改行コードが必要になります。</p>
+
+<p>プログラムで改行コードを明示的に指定すると、意図しない結果になるのを防ぐことができます。</p>
+
+<p>今回は下記の箇所で改行コードをCRLFに指定しています。</p>
+
+<pre>
+# 改行コードをCRLFへ
+local $/ = "\x0D\x0A";
+</pre>
+
+<p><code>&quot;\x0D\x0A&quot;</code> がCRLFを表現します。WindowsでCSVを作成すると改行コードをCRLFにすることが多いです。</p>
 
   </div>
   <div class="bottom">
